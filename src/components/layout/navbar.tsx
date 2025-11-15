@@ -4,11 +4,9 @@ import { Link } from "react-router-dom";
 type Props = {
   cartCount?: number;
   onNavigate?: (path: string) => void;
-  onSearch?: (query: string) => void;
 };
 
 type State = {
-  searchText: string;
   small: boolean;
 };
 
@@ -16,13 +14,11 @@ export default class Navbar extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      searchText: "",
       small: typeof window !== "undefined" ? window.innerWidth < 600 : false,
     };
   }
 
   componentDidMount() {
-    // simple resize listener to toggle a "small" layout
     if (typeof window !== "undefined") {
       window.addEventListener("resize", this.onResize);
     }
@@ -44,25 +40,13 @@ export default class Navbar extends React.Component<Props, State> {
   handleNav = (path: string) => {
     if (this.props.onNavigate) this.props.onNavigate(path);
     else {
-      // fallback: try simple location change (works in real app with router)
       if (typeof window !== "undefined") window.location.href = path;
-    }
-  };
-
-  handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({ searchText: e.target.value });
-  };
-
-  handleSearchKey = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
-      const q = this.state.searchText.trim();
-      if (this.props.onSearch) this.props.onSearch(q);
     }
   };
 
   render() {
     const { cartCount = 0 } = this.props;
-    const { small, searchText } = this.state;
+    const { small } = this.state;
 
     const navStyle: React.CSSProperties = {
       width: "100%",
@@ -130,15 +114,6 @@ export default class Navbar extends React.Component<Props, State> {
       gap: 12,
     };
 
-    const searchStyle: React.CSSProperties = {
-      padding: "6px 10px",
-      borderRadius: 8,
-      border: "none",
-      outline: "none",
-      width: small ? 120 : 220,
-      fontSize: 14,
-    };
-
     const cartStyle: React.CSSProperties = {
       display: "flex",
       alignItems: "center",
@@ -166,7 +141,7 @@ export default class Navbar extends React.Component<Props, State> {
     };
 
     return (
-      <nav style={navStyle} role="navigation" aria-label="Main navigation">
+      <nav style={navStyle}>
         <div style={leftStyle} onClick={() => this.handleNav("/")}>
           <div style={logoBox}>S</div>
           <div style={brandStyle}>
@@ -178,36 +153,31 @@ export default class Navbar extends React.Component<Props, State> {
         </div>
 
         <div style={centerStyle}>
-            <Link to={"/"} style={linkStyle} >Home</Link>
-            <Link to={"#products"} style={linkStyle} >Products</Link>
-            <Link to={"/about"} style={linkStyle} >About</Link>
-
-
+          <Link to={"/"} style={linkStyle}>Home</Link>
+          <Link to={"#products"} style={linkStyle}>Products</Link>
+          <Link to={"/about"} style={linkStyle}>About</Link>
         </div>
 
         <div style={rightStyle}>
-          <input
-            aria-label="Search products"
-            placeholder="Search"
-            value={searchText}
-            onChange={this.handleSearchChange}
-            onKeyDown={this.handleSearchKey}
-            style={searchStyle}
-          />
-
-          <div style={cartStyle} onClick={() => this.handleNav("/cart")} role="button" aria-label="Open cart">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden>
-              <path d="M6 6h15l-1.5 9h-11L6 6z" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
+          <div style={cartStyle} onClick={() => this.handleNav("/cart")}>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <path
+                d="M6 6h15l-1.5 9h-11L6 6z"
+                stroke="currentColor"
+                strokeWidth="1.2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
               <circle cx="10" cy="20" r="1" fill="currentColor" />
               <circle cx="18" cy="20" r="1" fill="currentColor" />
             </svg>
             <div style={{ display: "flex", flexDirection: "column", lineHeight: 1 }}>
               <span style={{ fontSize: 13, fontWeight: 700 }}>Cart</span>
-              <span style={{ fontSize: 11, color: "rgba(255,255,255,0.7)" }}>{cartCount} items</span>
+              <span style={{ fontSize: 11, color: "rgba(255,255,255,0.7)" }}>
+                {cartCount} items
+              </span>
             </div>
-            <div style={badgeStyle} aria-hidden>
-              {cartCount}
-            </div>
+            <div style={badgeStyle}>{cartCount}</div>
           </div>
         </div>
       </nav>
