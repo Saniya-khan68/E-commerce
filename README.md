@@ -16,7 +16,7 @@ Built using **React, TypeScript, Context API, React Router**, and **FakeStoreAPI
 ---
 
 ## 📂 Folder Structure
-
+```bash
 src/
 │── api/
 │ └── products.ts
@@ -41,7 +41,7 @@ src/
 │── App.tsx
 │── main.tsx
 │── index.css
-
+```
 
 ---
 
@@ -103,8 +103,8 @@ https://fakestoreapi.com/
 
 ### **1. Clone the repository**
 ```bash
-git clone https://github.com/your-username/your-repo-name.git
-cd your-repo-name
+git clone https://github.com/Saniya-khan68/E-commerce
+cd E-commerce
 npm install
 
 npm run dev
