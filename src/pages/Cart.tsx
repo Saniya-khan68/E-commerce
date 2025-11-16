@@ -159,6 +159,7 @@ export default function Cart(): React.ReactElement {
                   </div>
                 </div>
               ))}
+              
             </div>
 
             <div className="ct-summary">
